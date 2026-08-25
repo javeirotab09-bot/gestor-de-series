@@ -66,26 +66,14 @@ const EventRow = ({ rows, onDelete, onView, currentSku, index, style }: any) => 
   return (
     <div
       style={style}
-      className="group grid grid-cols-[100px_360px_360px_190px_160px_120px] items-center gap-x-4 border-b border-white/5 px-3 text-xs"
+      className="group grid grid-cols-[90px_1fr_1fr_150px_110px_120px] items-center gap-x-3 border-b border-white/5 px-3 text-xs"
     >
       <span className={`w-fit rounded-full border px-2 py-0.5 ${statusClass[event.status]}`}>
         {event.status === "ok" ? "Válida" : event.status === "duplicate" ? "Repetida" : "No existe"}
       </span>
-      <span
-        title={event.serie1 ?? "-"}
-        className={`font-mono whitespace-nowrap ${s1Read ? "rounded bg-sky-500/20 px-2 py-0.5 text-sky-100" : ""}`}
-      >
-        {event.serie1 ?? "-"}
-      </span>
-      <span
-        title={event.serie2 ?? "-"}
-        className={`font-mono whitespace-nowrap ${s2Read ? "rounded bg-sky-500/20 px-2 py-0.5 text-sky-100" : ""}`}
-      >
-        {event.serie2 ?? "-"}
-      </span>
-      <span title={resolvedSku} className={`font-mono whitespace-nowrap ${resolvedSku === "SKU NO DISPONIBLE" ? "text-amber-200" : "text-sky-100"}`}>
-        {resolvedSku}
-      </span>
+      <span className={`truncate font-mono ${s1Read ? "rounded bg-sky-500/20 px-2 py-0.5 text-sky-100" : ""}`}>{event.serie1 ?? "-"}</span>
+      <span className={`truncate font-mono ${s2Read ? "rounded bg-sky-500/20 px-2 py-0.5 text-sky-100" : ""}`}>{event.serie2 ?? "-"}</span>
+      <span className={`truncate font-mono ${resolvedSku === "SKU NO DISPONIBLE" ? "text-amber-200" : "text-sky-100"}`}>{resolvedSku}</span>
       <span className="whitespace-nowrap">{new Date(event.createdAt).toLocaleTimeString("es-CL")}</span>
       <div className="flex justify-end gap-1 opacity-0 transition group-hover:opacity-100">
         <button
@@ -1030,32 +1018,28 @@ export function LocalSeriesPlatform() {
             className="rounded-3xl border border-white/10 bg-white/6 p-5 shadow-[0_16px_40px_rgba(15,23,42,0.35)] backdrop-blur-lg"
           >
             <h2 className="font-semibold text-white">Lecturas (virtualizado)</h2>
-            <div className="mt-3 overflow-x-auto rounded-t-xl border border-white/10 border-b-0 bg-white/10">
-              <div className="grid min-w-[1320px] grid-cols-[100px_360px_360px_190px_160px_120px] gap-x-4 px-3 py-2 text-xs font-semibold text-slate-200">
-                <span>Estado</span>
-                <span>Series 1</span>
-                <span>Series 2</span>
-                <span>SKU</span>
-                <span>Hora</span>
-                <span className="text-right">Acción</span>
-              </div>
+            <div className="mt-3 grid grid-cols-[90px_1fr_1fr_150px_110px_120px] gap-x-3 rounded-t-xl bg-white/10 px-3 py-2 text-xs font-semibold text-slate-200">
+              <span>Estado</span>
+              <span>Series 1</span>
+              <span>Series 2</span>
+              <span>SKU</span>
+              <span>Hora</span>
+              <span className="text-right">Acción</span>
             </div>
-            <div className="overflow-x-auto rounded-b-xl border border-white/10 border-t-0 bg-slate-950/25">
-              <div className="min-w-[1320px]">
-                <List
-                  rowComponent={EventRow}
-                  rowCount={rowsForHistory.length}
-                  rowHeight={40}
-                  rowProps={{
-                    rows: rowsForHistory,
-                    onDelete: deleteScanEvent,
-                    onView: setSelectedRead,
-                    currentSku: activeSession?.sku ?? "",
-                  }}
-                  overscanCount={8}
-                  style={{ width: 1320, height: 320 }}
-                />
-              </div>
+            <div className="overflow-hidden rounded-b-xl border border-white/10 bg-slate-950/25">
+              <List
+                rowComponent={EventRow}
+                rowCount={rowsForHistory.length}
+                rowHeight={40}
+                rowProps={{
+                  rows: rowsForHistory,
+                  onDelete: deleteScanEvent,
+                  onView: setSelectedRead,
+                  currentSku: activeSession?.sku ?? "",
+                }}
+                overscanCount={8}
+                style={{ width: "100%", height: 320 }}
+              />
             </div>
           </article>
         </section>
